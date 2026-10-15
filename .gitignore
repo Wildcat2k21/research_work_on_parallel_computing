@@ -1,0 +1,8 @@
+/target
+/cache
+/dist
+
+faq.md
+note.md
+notices.md
+debug*.*

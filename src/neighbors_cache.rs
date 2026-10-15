@@ -30,23 +30,21 @@ pub fn load_or_compute_connections(
         let total = conf.grid.size() as usize;
         let mut cached_neighbors: Vec<Vec<usize>> = Vec::with_capacity(total);
         
-        let sorted_selected_ids: Vec<_> = sorted_cells.0.iter().map(|(_, ids)| *ids).collect();
-
-        for (i, (_, cell_id)) in sorted_cells.0.iter().enumerate() {
-            if i % (total / 20).max(1) == 0 {
-                let progress = (i as f32 / total as f32 * 100.0) as usize;
+        for (cid, _) in sorted_cells.0.iter().enumerate() {
+            if cid % (total / 20).max(1) == 0 {
+                let progress = (cid as f32 / total as f32 * 100.0) as usize;
                 let bars = progress / 2;
                 print!("\r[{}{}] {}%", "█".repeat(bars), " ".repeat(50 - bars), progress);
                 io::stdout().flush().unwrap();
             }
 
-            let seria = Seria::new(&sorted_selected_ids, &conf.grid, *cell_id, conf.observ_size + 1);
+            let seria = Seria::new(sorted_cells, &conf.grid, cid, conf.observ_size + 1);
             
             // Кэшируем ТОЛЬКО CellID! Entity добавим позже.
-            let mut nbors_cell_ids = vec![*cell_id]; 
+            let mut nbors_cell_ids = vec![cid]; 
             for obs_cell in seria {
-                if obs_cell != cell_id {
-                    nbors_cell_ids.push(*obs_cell);
+                if obs_cell != cid {
+                    nbors_cell_ids.push(obs_cell);
                 }
             }
             cached_neighbors.push(nbors_cell_ids);

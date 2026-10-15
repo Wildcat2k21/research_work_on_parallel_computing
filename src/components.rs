@@ -19,7 +19,7 @@ pub struct CellID(pub usize);
 pub struct Position(pub Vec2);
 
 pub struct Seria<'a> {
-    pub linear_present: &'a Vec<usize>,
+    pub linear_present: &'a SortedCellsByIDS,
     pub grid_present: &'a Grid,
     pub so: usize,
     pub sl: usize,
@@ -60,7 +60,7 @@ impl Neighbors {
 
 impl<'a> Seria<'a> {
     pub fn new(
-        linear_present: &'a Vec<usize>,
+        linear_present: &'a SortedCellsByIDS,
         grid_present: &'a Grid,
         so: usize,
         sl: usize,
@@ -194,7 +194,7 @@ impl<'a> Seria<'a> {
 }
 
 impl<'a> Iterator for Seria<'a> {
-    type Item = &'a usize;
+    type Item = usize;
 
     fn next(&mut self) -> Option<Self::Item> {
         if !(self.col_index == 0
@@ -216,10 +216,8 @@ impl<'a> Iterator for Seria<'a> {
                 so.y - bottom + self.row_index,
             );
 
-            let val = self.linear_present.get(
-                self.grid_present.gid_to_cid(
-                    seria_current,
-                ).unwrap()
+            let cid = self.grid_present.gid_to_cid(
+                seria_current,
             ).unwrap();
 
             self.col_index += 1;
@@ -229,7 +227,7 @@ impl<'a> Iterator for Seria<'a> {
                 self.row_index += 1;
             }
 
-            Some(val)
+            Some(cid)
         }
         else { 
             None

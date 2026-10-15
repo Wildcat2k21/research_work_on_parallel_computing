@@ -35,7 +35,7 @@ pub struct CellResource {
 }
 
 #[derive(Resource)]
-pub struct SortedCellsByIDS(pub Vec<(Entity, usize)>);
+pub struct SortedCellsByIDS(pub Vec<Entity>);
 
 #[derive(Clone, Copy, PartialEq)]
 pub enum UseOptimization {
@@ -166,8 +166,8 @@ impl Grid {
 }
 
 impl<'a> IntoIterator for &'a SortedCellsByIDS {
-    type Item = &'a (Entity, usize);
-    type IntoIter = std::slice::Iter<'a, (Entity, usize)>;
+    type Item = &'a Entity;
+    type IntoIter = std::slice::Iter<'a, Entity>;
 
     fn into_iter(self) -> Self::IntoIter {
         self.0.iter()

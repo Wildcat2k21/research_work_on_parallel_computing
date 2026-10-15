@@ -13,7 +13,7 @@ use bevy::{
 };
 
 fn main() {
-    let conf = Config::new(5.0, 1.0, 2, Grid::new(400, 400));
+    let conf = Config::new(5.0, 1.1, 2, Grid::new(250, 250));
     let demo_conf = DemoConfig {
         optimizations: DemoOptimize(vec![UseOptimization::CacheConnections]),
     };
